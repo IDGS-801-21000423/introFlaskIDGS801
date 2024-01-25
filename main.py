@@ -1,4 +1,4 @@
-from flask import Flask, render_template     #Importar flask, render template
+from flask import Flask, render_template, request     #Importar flask, render template
 
 app = Flask(__name__)       # Nombrar la app Flask
 
@@ -47,6 +47,34 @@ def func2(n1, n2):
 @app.route("/default/<string:a>")
 def func3(a ="Angel"):                    # Valor por defecto en la ruta
   return "El nombre de User es: " +a
+
+@app.route("/calcular", methods=["GET", "POST"])
+def calcular():
+  if request.method == "POST":
+    num1 =request.form.get("n1")
+    num2 =request.form.get("n2")
+    return"La multiplicacion de {} x {} = {}".format(num1, num2, str(int(num1) * int(num2)))
+  else:
+    return '''
+    <form action="/calcular" method="POST">
+      <label>N1:</label>
+      <input type="text" name="n1"><br>
+      <label>N2:</label>
+      <input type="text" name="n2"><br>
+      <input type="submit"/>
+    </form>
+    '''
+
+@app.route("/OperasBas")
+def operas():
+  return render_template("OperasBas.html")
+
+@app.route("/resultado", methods=["GET", "POST"])
+def result():
+  if request.method == "POST":
+    num1 =request.form.get("n1")
+    num2 =request.form.get("n2")
+    return"La multiplicacion de {} x {} = {}".format(num1, num2, str(int(num1) * int(num2)))
 
 
 
