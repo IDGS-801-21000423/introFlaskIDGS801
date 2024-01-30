@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request     #Importar flask, render template
-
+import forms                # Importar archivo forms
 app = Flask(__name__)       # Nombrar la app Flask
 
 # Definir rutas
@@ -7,11 +7,20 @@ app = Flask(__name__)       # Nombrar la app Flask
 def index():
   return render_template("index.html") #pagina1
 
-@app.route("/alumnos")         
+
+
+@app.route("/alumnos", methods = ['GET', 'POST'])         
 def alumnos():
-  titulo ="UTL"
-  nombres = ["mario", "pedro", "juan", "dario"]
-  return render_template("alumnos.html", titulo = titulo, nombres = nombres) #pagina2
+  alumno_clase = forms.UserForm(request.form)
+  if request.method == 'POST':
+    pass
+  
+  return render_template("alumnos.html", form = alumno_clase)
+  """ titulo ="UTL"
+  nombres = ["mario", "pedro", "juan", "dario"] 
+  return render_template("alumnos.html", titulo = titulo, nombres = nombres)"""
+
+
 
 @app.route("/maestros")         
 def mestros():
