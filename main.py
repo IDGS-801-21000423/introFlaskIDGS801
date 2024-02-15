@@ -15,17 +15,23 @@ def alumnos():
   nom=""
   apa=""
   ama=""
-  if request.method == 'POST':
+  email=""
+  edad=""
+  if request.method == 'POST' and alumno_clase.validate():
     nom = alumno_clase.nombre.data
     apa = alumno_clase.apaterno.data
     ama = alumno_clase.amaterno.data
+    email = alumno_clase.email.data
+    edad = alumno_clase.edad.data
     print("Nombre: {}".format(nom))
     print("Apaterno: {}".format(apa))
     print("Amaterno: {}".format(ama))
+    print("Email: {}".format(email))
+    print("Edad: {}".format(edad))
     
     
   
-  return render_template("alumnos.html", form = alumno_clase,nom=nom,apa=apa,ama=ama)
+  return render_template("alumnos.html", form = alumno_clase,nom=nom,apa=apa,ama=ama, email=email, edad=edad)
   """ titulo ="UTL"
   nombres = ["mario", "pedro", "juan", "dario"] 
   return render_template("alumnos.html", titulo = titulo, nombres = nombres)"""
