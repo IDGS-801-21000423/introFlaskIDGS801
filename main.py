@@ -1,16 +1,39 @@
-from flask import Flask, render_template, request     #Importar flask, render template
-import forms                # Importar archivo forms
-app = Flask(__name__)       # Nombrar la app Flask
+from flask import Flask, render_template, request     # Importar flask, render template
+import forms                                          # Importar archivo forms
+from flask import flash
+from flask_wtf.csrf import CSRFProtect
+from flask import g                                   # Importar variables globales
 
+app = Flask(__name__)                                 # Nombrar la app Flask
+app.secret_key ='esta es mi clave secreta'
+
+# ----------------------------------------------------------------------------------------
+# Manejo de errores - mostrar pagina
+@app.errorhandler(404)
+def page_not_found(e):
+  return render_template('404.html'),404
+
+# Enviar antes de la peticion
+@app.before_request
+def before_request():
+  g.nombre='Jose'
+  print("before 1")
+
+# Enviar despues de la peticion
+@app.after_request
+def after_request(response):
+  print('after 3')
+  return response
+  
+# ----------------------------------------------------------------------------------------
 # Definir rutas
 @app.route("/")         
 def index():
   return render_template("index.html") #pagina1
 
-
-
 @app.route("/alumnos", methods = ['GET', 'POST'])         
 def alumnos():
+  print("Alumno: {}".format(g.nombre))
   alumno_clase = forms.UserForm(request.form)
   nom=""
   apa=""
@@ -29,7 +52,8 @@ def alumnos():
     print("Email: {}".format(email))
     print("Edad: {}".format(edad))
     
-    
+    mensaje='Bienvenido {}'.format(nom)
+    flash(mensaje)
   
   return render_template("alumnos.html", form = alumno_clase,nom=nom,apa=apa,ama=ama, email=email, edad=edad)
   """ titulo ="UTL"
